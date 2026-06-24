@@ -154,8 +154,12 @@ io.on('connection', (socket) => {
 });
 
 // Spin up connections
+httpServer.listen(process.env.PORT || 5000, () => {
+  console.log('⚡ Server Engine Bound to Pipeline');
+});
+
 mongoose.connect(process.env.MONGODB_URI!)
-  .then(() => {
-    httpServer.listen(process.env.PORT || 5000, () => console.log('⚡ Server Engine Bound to Pipeline'));
-  })
-  .catch(err => console.error('Database instantiation breakdown:', err));
+  .then(() => console.log('Database Connected Successfully'))
+  .catch(err => {
+    console.error('Database instantiation breakdown:', err);
+  });
