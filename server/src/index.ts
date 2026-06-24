@@ -20,7 +20,7 @@ const io = new Server(httpServer, {
 });
 
 // Instantiate the secure Clerk backend SDK compiler instance
-const clerkClient = createClerkClient({ secretKey: process.env.CLERK_SECRET_KEY });
+const clerkClient = createClerkClient({ secretKey: process.env.CLERK_SECRET_KEY as string });
 
 // In-memory registry state map tracking online room members: { roomId: { socketId: username } }
 const roomUsers: Record<string, Record<string, string>> = {};
@@ -33,7 +33,7 @@ io.use(async (socket: Socket, next) => {
   try {
     // Explicitly verify the JWT Token payload outside of an HTTP Request context
     const payload = await verifyToken(token, {
-      secretKey: process.env.CLERK_SECRET_KEY
+      secretKey: process.env.CLERK_SECRET_KEY as string
     });
     
     if (!payload || !payload.sub) {
@@ -147,8 +147,8 @@ io.on('connection', (socket) => {
   // Clean up when a connection cuts out
   socket.on('disconnect', () => {
     if (currentRoom && roomUsers[currentRoom]) {
-      delete roomUsers[currentRoom][socket.id];
-      io.to(currentRoom).emit('room:presence', Object.values(roomUsers[currentRoom]));
+      delete roomUsers[currentRoom]![socket.id];
+      io.to(currentRoom).emit('room:presence', Object.values(roomUsers[currentRoom] || {}));
     }
   });
 });
