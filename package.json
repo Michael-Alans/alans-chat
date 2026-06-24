@@ -1,0 +1,7 @@
+{
+  "name": "3mtt-chat-app-root",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm --parallel -r run dev"
+  }
+}
