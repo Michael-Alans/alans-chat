@@ -121,7 +121,8 @@ export default function ChatInterface() {
 
     const initSocket = async () => {
       const token = await getToken();
-      socketInstance = io('http://localhost:5000', {
+      const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
+      socketInstance = io(backendUrl, {
         auth: { token }
       });
 
